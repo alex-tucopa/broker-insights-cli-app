@@ -1,0 +1,3 @@
+PolicyNumber,InsuredAmount,StartDate,EndDate,AdminFee,BusinessDescription,BusinessEvent,ClientType,ClientRef,Commission,EffectiveDate,InsurerPolicyNumber,IPTAmount,Premium,PolicyFee,PolicyType,Insurer,Product,RenewalDate,RootPolicyRef
+POL001,1000000,15/01/2023,15/01/2024,100,Business ABC,New Business,NotCustomerType,CR001,0.15,15/01/2023,IPN001,150,8000,50,Property,ABC Insurance,Property Insurance,15/01/2024,RP001
+POL002,750000,10/02/2023,10/02/2024,75,Business XYZ,Renewal,Individual,CR002,0.12,10/02/2023,IPN002,100,6000,30,Auto,XYZ Insurers,Auto Coverage,10/02/2024,RP002

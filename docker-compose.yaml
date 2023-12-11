@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  broker-insights-cli-app:
+    build:
+      context: .
+    container_name: broker-insights-cli-app
+    tty: true
+    stdin_open: true

@@ -1,0 +1,9 @@
+PolicyNumber,InsuredAmount,StartDate,EndDate,AdminFee,BusinessDescription,BusinessEvent,ClientType,ClientRef,Commission,EffectiveDate,InsurerPolicyNumber,IPTAmount,Premium,PolicyFee,PolicyType,Insurer,Product,RenewalDate,RootPolicyRef
+POL001,1000000,15/01/2023,15/01/2024,100,Business ABC,New Business,Corporate,CR001,0.15,15/01/2023,IPN001,150,8000,50,Property,ABC Insurance,Property Insurance,15/01/2024,RP001
+POL002,750000,10/02/2023,10/02/2024,75,Business XYZ,Renewal,Individual,CR002,0.12,10/02/2023,IPN002,100,6000,30,Auto,XYZ Insurers,Auto Coverage,10/02/2024,RP002
+POL003,500000,20/03/2023,20/03/2024,50,Business PQR,Policy Renewal,Corporate,CR003,0.1,20/03/2023,IPN003,75,4000,25,Health,PQR Underwriters,Health Insurance,20/03/2024,RP003
+POL004,800000,15/04/2023,15/04/2024,80,Business LMN,New Business,Individual,CR004,0.18,15/04/2023,IPN004,120,9000,60,Property,LMN Insurance,Property Insurance,15/04/2024,RP004
+POL005,600000,12/05/2023,12/05/2024,60,Business XYZ,Policy Renewal,Corporate,CR005,0.14,12/05/2023,IPN005,90,7000,40,Auto,XYZ Insurers,Auto Coverage,12/05/2024,RP005
+POL020,970000,22/08/2024,22/08/2025,97,Business PQR,Policy Renewal,Individual,CR008,0.2,22/08/2024,IPN020,145.5,7600,71,Auto,PQR Underwriters,Auto Coverage,22/08/2025,RP020
+POL021,1100000,28/09/2024,28/09/2025,110,Business LMN,New Business,Corporate,CR021,0.15,28/09/2024,IPN021,165,9500,50,Property,LMN Insurance,Property Insurance,28/09/2025,RP021
+POL022,630000,14/10/2024,14/10/2025,63,Business XYZ,Policy Renewal,Individual,CR022,0.1,14/10/2024,IPN022,94.5,5500,30,Auto,XYZ Insurers,Auto Coverage,14/10/2025,RP022

@@ -1,0 +1,6 @@
+vendor
+logs
+src/views/cache
+.phpunit.cache
+.phpunit.result.cache
+.env

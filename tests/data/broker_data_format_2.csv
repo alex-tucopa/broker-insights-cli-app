@@ -1,0 +1,4 @@
+PolicyRef,CoverageAmount,ExpirationDate,AdminCharges,InitiationDate,CompanyDescription,ContractEvent,ConsumerID,BrokerFee,ActivationDate,ConsumerCategory,InsuranceCompanyRef,TaxAmount,CoverageCost,ContractFee,ContractCategory,Underwriter,NextRenewalDate,PrimaryPolicyRef,InsurancePlan
+REF079,645000,10/04/2024,65,10/04/2023,Enterprise Z6A,Contract Renewal,CID079,0.15,10/04/2023,Individual,ICR079,96.75,5600,36,Property,Z6A Underwriters,10/04/2024,PPR079,Home Protect
+REF080,855500,05/05/2024,86,05/05/2023,Enterprise A7B,New Contract,CID080,0.19,05/05/2023,Corporate,ICR080,128.33,7500,47,Health,A7B Underwriters,05/05/2024,PPR080,Life Secure
+REF081,595000,15/06/2024,60,15/06/2023,Enterprise B8C,Contract Renewal,CID081,0.16,15/06/2023,Individual,ICR081,89.25,5200,33,Auto,B8C Underwriters,15/06/2024,PPR081,Vehicle Secure
