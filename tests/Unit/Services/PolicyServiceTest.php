@@ -80,5 +80,6 @@ describe('PolicyService', function() {
         expect($policies[5]->broker_policy_ref)->toBe('POL020');
         expect($policies[6]->broker_policy_ref)->toBe('POL021');
         expect($policies[7]->broker_policy_ref)->toBe('POL022');
+        expect($policies[7]->duration)->toBe(0);
     });
 });

@@ -64,7 +64,7 @@ class PolicyReportCommand extends Command
                         $policy->effective_date,
                         $policy->renewal_date,
                         $policy->is_active ? 'Y' : '',
-                        $policy->duration > 0 ? $policy->duration : 0,
+                        $policy->duration,
                         $policy->amount_insured,
                         $policy->premium,
                         $policy->insurer_name,
