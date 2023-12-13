@@ -30,7 +30,7 @@ class PolicyService
     public static function getActivePolicyAverageDuration(?int $brokerId): int
     {
         $dateDifferenceSubQuery = Capsule::table('policy')
-            ->selectRaw('FLOOR(JULIANDAY(`renewal_date`)) - FLOOR(JULIANDAY()) AS `duration`')
+            ->selectRaw('(FLOOR(JULIANDAY(`renewal_date`)) - FLOOR(JULIANDAY(DATE("now")))) - 1 AS `duration`')
             ->whereRaw('`effective_date` <= :today AND `renewal_date` > :today');
 
         $bindings = [
