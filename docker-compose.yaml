@@ -6,3 +6,14 @@ services:
     container_name: broker-insights-cli-app
     tty: true
     stdin_open: true
+    depends_on: 
+      - broker-insights-mysql
+
+  broker-insights-mysql:
+    image: mysql:8.0.35-debian
+    container_name: broker-insights-mysql
+    environment:
+      MYSQL_DATABASE: insights
+      MYSQL_USER: insights
+      MYSQL_PASSWORD: insights
+      MYSQL_RANDOM_ROOT_PASSWORD: 1

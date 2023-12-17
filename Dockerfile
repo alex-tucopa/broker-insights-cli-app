@@ -4,9 +4,9 @@ COPY . /usr/src/brokerapp
 WORKDIR /usr/src/brokerapp
 
 RUN apt-get update \
-    && apt-get install -y zip
-
-RUN pecl install xdebug \
+    && apt-get install -y zip \
+    && docker-php-ext-install pdo_mysql mysqli \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -15,7 +15,7 @@ RUN composer dump-autoload
 
 RUN touch database/app.sqlite
 
-RUN php command app:create-database-tables
+RUN php command app:initialise-database
 
 RUN mv .env.demo .env
 

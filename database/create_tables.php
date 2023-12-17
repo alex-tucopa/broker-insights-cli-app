@@ -32,7 +32,7 @@ if (!$builder->hasTable('customer_type')) {
         $table->string('name', 100);
         $table->timestamps();
 
-        // $table->unique('name');
+        $table->unique('name');
     });
 }
 
@@ -42,7 +42,7 @@ if (!$builder->hasTable('product_type')) {
         $table->string('name', 100);
         $table->timestamps();
 
-        // $table->unique('name');
+        $table->unique('name');
     });
 }
 
@@ -52,7 +52,7 @@ if (!$builder->hasTable('business_event_type')) {
         $table->string('name', 100);
         $table->timestamps();
 
-        // $table->unique('name');
+        $table->unique('name');
     });
 }
 
@@ -92,6 +92,7 @@ if (!$builder->hasTable('policy')) {
         $table->timestamps();
 
         $table->primary(['broker_id', 'broker_policy_ref']);
+        $table->index('broker_id');
         $table->index('product_id');
         $table->index('insurer_policy_ref');
         $table->index('primary_policy_ref');
