@@ -1,13 +1,12 @@
 <?php
 
 use App\Exceptions\DataFormatException;
-use App\Exceptions\UnknownDataFormatException;
 use App\Services\FileParser;
 use App\Services\DataTransforms;
 
-describe('CsvFileParser', function () {
+describe('JsonFileParser', function () {
     it('maps headers', function ($inputFormat, $expectedOutput) {
-        $inputFileName = 'tests/data/test_1.csv';
+        $inputFileName = 'tests/data/test_1.json';
 
         $parser = FileParser::makeParser($inputFormat);
 
@@ -20,7 +19,7 @@ describe('CsvFileParser', function () {
         $this->assertEquals($expectedOutput, $actualOutput);
     })->with(function () {
         $format1 = [
-            'format' => 'csv',
+            'format' => 'json',
             'map' => [
                 'source_header_1' => 'target_header_1',
                 'source_header_2' => 'target_header_2',
@@ -53,7 +52,7 @@ describe('CsvFileParser', function () {
     });
 
     it('applies transforms', function ($inputFormat, $expectedOutput) {
-        $inputFileName = 'tests/data/test_1.csv';
+        $inputFileName = 'tests/data/test_1.json';
 
         $parser = FileParser::makeParser($inputFormat);
 
@@ -66,7 +65,7 @@ describe('CsvFileParser', function () {
         $this->assertEquals($expectedOutput, $actualOutput);
     })->with(function () {
         $formatWithTransforms = [
-            'format' => 'csv',
+            'format' => 'json',
             'map' => [
                 'source_header_1' => 'target_header_1',
                 'source_header_2' => [
@@ -104,10 +103,10 @@ describe('CsvFileParser', function () {
     });
 
     it('throws exception if headers do not match format', function() {
-        $inputFileName = 'tests/data/test_1.csv';
+        $inputFileName = 'tests/data/test_1.json';
 
         $nonMatchingFormat = [
-            'format' => 'csv',
+            'format' => 'json',
             'map' => [
                 'NOT_source_header_1' => 'target_header_1',
                 'source_header_2' => 'target_header_2',
@@ -120,22 +119,4 @@ describe('CsvFileParser', function () {
         $generator = $parser->parse($inputFileName);
         $generator->next();
     })->throws(DataFormatException::class);
-
-    it('throws exception for unrecognised format', function() {
-        $inputFileName = 'tests/data/test_1.csv';
-
-        $nonMatchingFormat = [
-            'format' => 'notcsv',
-            'map' => [
-                'source_header_1' => 'target_header_1',
-                'source_header_2' => 'target_header_2',
-                'source_header_3' => 'target_header_3',
-            ],
-        ];
-
-        $parser = FileParser::makeParser($nonMatchingFormat);
-
-        $generator = $parser->parse($inputFileName);
-        $generator->next();
-    })->throws(UnknownDataFormatException::class);
 });

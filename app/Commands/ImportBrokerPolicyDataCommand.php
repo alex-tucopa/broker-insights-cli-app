@@ -8,12 +8,12 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Exceptions\CsvFormatException;
+use App\Exceptions\DataFormatException;
 use App\Exceptions\ImportBrokerPolicyDataException;
 use App\Exceptions\ImportBrokerPolicyInvalidArgumentException;
 use App\Models\Broker;
 use App\Validators\BrokerInputValidator;
-use App\Services\CsvFileParser;
+use App\Services\FileParser;
 use App\Services\ImportBrokerPolicy;
 
 #[AsCommand(name: 'app:import-broker-policy-data')]
@@ -47,7 +47,8 @@ class ImportBrokerPolicyDataCommand extends Command
                 throw new ImportBrokerPolicyInvalidArgumentException("Format is not configured: \"$inputFormat\"");
             }
 
-            $fileParser = new CsvFileParser($mappings[$inputFormat]);
+            $fileParser = FileParser::makeParser($mappings[$inputFormat]);
+
             $validator = new BrokerInputValidator();
 
             $errors = [];
@@ -74,7 +75,7 @@ class ImportBrokerPolicyDataCommand extends Command
                 $output->writeln("File \"$inputFilename\" processed");
             }
             return Command::SUCCESS;
-        } catch (ImportBrokerPolicyInvalidArgumentException|CsvFormatException $e) {
+        } catch (ImportBrokerPolicyInvalidArgumentException|DataFormatException $e) {
             $output->writeln('Input error ' . $e->getMessage());
             return Command::INVALID;
         } catch (Exception $e) {

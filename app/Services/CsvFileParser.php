@@ -3,14 +3,10 @@
 namespace App\Services;
 
 use Generator;
-use App\Exceptions\CsvFormatException;
+use App\Exceptions\DataFormatException;
 
-class CsvFileParser extends CsvParser
+class CsvFileParser extends FileParser
 {
-    public function __construct(
-        private array $dataMap = [],
-    ){}
-
     public function parse(string $filename): Generator
     {
         try {
@@ -19,15 +15,14 @@ class CsvFileParser extends CsvParser
             $headers = fgetcsv($stream);
 
             if ($headers !== array_keys($this->dataMap)) {
-                throw new CsvFormatException("CSV headers do not match format, filename: {$filename}");
+                throw new DataFormatException("CSV headers do not match format, filename: {$filename}");
             }
 
             while ($record = fgetcsv($stream)) {
-                yield $this->parseRecord($record, array_values($this->dataMap));
+                yield $this->parseRecord(array_combine($headers, $record), $this->dataMap);
             }
         } finally {
             fclose($stream);
         }
     }
 }
-;

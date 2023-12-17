@@ -85,12 +85,54 @@ describe('ImportBrokerPolicyDataCommand', function() {
         expect($tester->getDisplay())->toBe($expectedError);
     });
 
-    it('imports valid data from file', function() {
+    it('imports valid data from CSV file', function() {
         $tester = new CommandTester(new ImportBrokerPolicyDataCommand());
         $tester->execute(['broker_id' => 1, 'filename' => 'tests/data/broker_data_format_1.csv', 'format' => 'format_1']);
         expect($tester->getStatusCode())->toBe(Command::SUCCESS);
         expect($tester->getDisplay())->toBe("File \"tests/data/broker_data_format_1.csv\" processed\n");
 
+        $insurers = Insurer::all();
+        expect($insurers->count())->toBe(4);
+        expect($insurers[0]->name)->toBe('ABC Insurance');
+        expect($insurers[0]->id)->toBe(1);
+        expect($insurers[1]->name)->toBe('XYZ Insurers');
+        expect($insurers[1]->id)->toBe(2);
+        expect($insurers[2]->name)->toBe('PQR Underwriters');
+        expect($insurers[2]->id)->toBe(3);
+        expect($insurers[3]->name)->toBe('LMN Insurance');
+        expect($insurers[3]->id)->toBe(4);
+
+        $products = Product::all();
+        expect($products->count())->toBe(5);
+        expect($products[0]->name)->toBe('Property Insurance');
+        expect($products[0]->insurer_id)->toBe(1);
+        expect($products[1]->name)->toBe('Auto Coverage');
+        expect($products[1]->insurer_id)->toBe(2);
+        expect($products[2]->name)->toBe('Health Insurance');
+        expect($products[2]->insurer_id)->toBe(3);
+        expect($products[3]->name)->toBe('Property Insurance');
+        expect($products[3]->insurer_id)->toBe(4);
+        expect($products[4]->name)->toBe('Auto Coverage');
+        expect($products[4]->insurer_id)->toBe(3);
+
+        $policies = Policy::all();
+        expect($policies->count())->toBe(8);
+        expect($policies[0]->broker_policy_ref)->toBe('POL001');
+        expect($policies[1]->broker_policy_ref)->toBe('POL002');
+        expect($policies[2]->broker_policy_ref)->toBe('POL003');
+        expect($policies[3]->broker_policy_ref)->toBe('POL004');
+        expect($policies[4]->broker_policy_ref)->toBe('POL005');
+        expect($policies[5]->broker_policy_ref)->toBe('POL020');
+        expect($policies[6]->broker_policy_ref)->toBe('POL021');
+        expect($policies[7]->broker_policy_ref)->toBe('POL022');
+    });
+
+    it('imports valid data from JSON file', function() {
+        $tester = new CommandTester(new ImportBrokerPolicyDataCommand());
+        $tester->execute(['broker_id' => 1, 'filename' => 'tests/data/broker_data_format_1.json', 'format' => 'format_3']);
+        expect($tester->getStatusCode())->toBe(Command::SUCCESS);
+
+        echo $tester->getDisplay();
         $insurers = Insurer::all();
         expect($insurers->count())->toBe(4);
         expect($insurers[0]->name)->toBe('ABC Insurance');

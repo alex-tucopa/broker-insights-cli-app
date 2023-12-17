@@ -4,6 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 
-class CsvFormatException extends Exception
+class DataFormatException extends Exception
 {
 }
