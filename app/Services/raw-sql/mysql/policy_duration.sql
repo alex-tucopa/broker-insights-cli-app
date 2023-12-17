@@ -1,0 +1,1 @@
+DATEDIFF(`renewal_date`, CURRENT_DATE()) - 1 AS `duration`

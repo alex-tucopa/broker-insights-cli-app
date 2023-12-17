@@ -8,10 +8,10 @@ class PolicyService
 {
     public static function getActivePolicyCountAndSumInsured(?int $brokerId): array
     {
-        $today = date('Y-m-d');
+        $today = self::today();
 
         $query = Capsule::table('policy')
-            ->selectRaw('COUNT(*) AS `count`, SUM(`amount_insured`) AS `amount_insured`')
+            ->selectRaw('COUNT(*) AS `count`, FLOOR(SUM(`amount_insured`)) AS `amount_insured`')
             ->where('effective_date', '<=', $today)
             ->where('renewal_date', '>', $today);
 
@@ -29,22 +29,20 @@ class PolicyService
 
     public static function getActivePolicyAverageDuration(?int $brokerId): int
     {
-        $dateDifferenceSubQuery = Capsule::table('policy')
-            ->selectRaw('(FLOOR(JULIANDAY(`renewal_date`)) - FLOOR(JULIANDAY(DATE("now")))) - 1 AS `duration`')
-            ->whereRaw('`effective_date` <= :today AND `renewal_date` > :today');
+        $today = self::today();
 
-        $bindings = [
-            ':today' => date('Y-m-d'),
-        ];
+        $dateDifferenceSubQuery = Capsule::table('policy')
+            ->selectRaw(self::getRawSql('policy_duration.sql'))
+            ->where('effective_date', '<=', $today)
+            ->where('renewal_date', '>', $today);
 
         if ($brokerId) {
-            $dateDifferenceSubQuery->whereRaw('broker_id = :broker_id');
-            $bindings[':broker_id'] = $brokerId;
+            $dateDifferenceSubQuery->where('broker_id', $brokerId);
         }
             
         $result = Capsule::select(
             "SELECT ROUND(AVG(`duration`)) AS `average_duration` FROM ({$dateDifferenceSubQuery->toSql()}) as `policy_duration`",
-            $bindings,
+            $dateDifferenceSubQuery->getBindings()
         )[0];
 
         return $result->average_duration ?? 0;
@@ -52,23 +50,22 @@ class PolicyService
 
     public static function getCustomerCount(?int $brokerId): int
     {
+        $today = self::today();
+
         $distinctCustomersSubQuery = Capsule::table('policy')
             ->distinct()
             ->select(['broker_id', 'broker_customer_ref', 'customer_type_id'])
-            ->whereRaw('`effective_date` <= :today AND `renewal_date` > :today');
+            ->where('effective_date', '<=', $today)
+            ->where('renewal_date', '>', $today);
 
-         $bindings = [
-            ':today' => date('Y-m-d'),
-        ];
 
         if ($brokerId) {
-            $distinctCustomersSubQuery->whereRaw('broker_id = :broker_id');
-            $bindings[':broker_id'] = $brokerId;
+            $distinctCustomersSubQuery->where('broker_id', $brokerId);
         }
 
         $result = Capsule::select(
             "SELECT COUNT(*) AS `count` FROM ({$distinctCustomersSubQuery->toSql()}) AS `customers`",
-            $bindings,
+            $distinctCustomersSubQuery->getBindings(),
         )[0];
 
         return $result->count;
@@ -76,10 +73,15 @@ class PolicyService
 
     public static function getPolicies(?int $brokerId): array
     {
-        $querySql = file_get_contents(__DIR__ . '/queries/select_policies.sql');
+        $querySql = self::getRawSql('select_policies.sql');
 
+        $today = self::today();
+        
         $bindings = [
-            ':today' => date('Y-m-d'),
+            ':today_1' => $today,
+            ':today_2' => $today,
+            ':today_3' => $today,
+            ':today_4' => $today,
         ];
 
         if ($brokerId) {
@@ -91,5 +93,16 @@ class PolicyService
 
 
         return Capsule::select($querySql, $bindings);
+    }
+
+    private static function today(): string
+    {
+        return date('Y-m-d');
+    }
+
+    private static function getRawSql($filename): string
+    {
+        $driver = Capsule::table('policy')->getConnection()->getDriverName();
+        return file_get_contents(__DIR__ . "/raw-sql/{$driver}/{$filename}");
     }
 }

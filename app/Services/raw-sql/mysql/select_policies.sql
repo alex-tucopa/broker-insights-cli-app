@@ -1,17 +1,21 @@
 SELECT 
-    `policy`.*, 
+    `policy`.`broker_policy_ref`, 
+    `policy`.`effective_date`, 
+    `policy`.`renewal_date`, 
+    FLOOR(`policy`.`amount_insured`) AS `amount_insured`, 
+    FLOOR(`policy`.`premium`) AS `premium`, 
     `customer_type`.`name` AS `customer_type`, 
     `product`.`name` AS `product_name`, 
     `product_type`.`name` AS `product_type`,
     `insurer`.`name` AS `insurer_name`,
     CASE 
-        WHEN `effective_date` <= :today AND `renewal_date` > :today 
+        WHEN `effective_date` <= :today_1 AND `renewal_date` > :today_2 
             THEN 1 
             ELSE 0 
         END `is_active`, 
     CASE 
-        WHEN `effective_date` <= :today AND `renewal_date` > :today 
-            THEN (FLOOR(JULIANDAY(`renewal_date`)) - FLOOR(JULIANDAY(DATE('now')))) - 1 
+        WHEN `effective_date` <= :today_3 AND `renewal_date` > :today_4 
+            THEN DATEDIFF(`renewal_date`, CURRENT_DATE()) - 1
             ELSE 0 
         END `duration` 
 FROM `policy` 

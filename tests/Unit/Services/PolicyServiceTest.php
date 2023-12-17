@@ -23,7 +23,7 @@ describe('PolicyService', function() {
     });
 
     it('gets active policy count and sum insured', function() {
-        expect(PolicyService::getActivePolicyCountAndSumInsured(1))->toBe([
+        expect(PolicyService::getActivePolicyCountAndSumInsured(1))->toEqual([
             'activePolicyCount' => 5,
             'activePolicySumInsured' => 3650000,
         ]);
